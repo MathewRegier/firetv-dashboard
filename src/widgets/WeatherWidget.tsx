@@ -4,16 +4,68 @@ import { getIcon } from '@/lib/iconMap'
 import type { WeatherData } from '@/lib/dashboardTypes'
 
 interface WeatherWidgetProps {
-  data: WeatherData
+  data: WeatherData | null
   mode?: 'default' | 'sleep'
+  /** True while the first live fetch is in flight (subtle dim). */
+  loading?: boolean
+  /** Shown under the title when data failed (e.g. missing API key). */
+  errorHint?: string | null
 }
 
-export function WeatherWidget({ data, mode = 'default' }: WeatherWidgetProps) {
-  const IconComponent = getIcon(data.icon)
+export function WeatherWidget({
+  data,
+  mode = 'default',
+  loading = false,
+  errorHint = null,
+}: WeatherWidgetProps) {
   const isSleep = mode === 'sleep'
 
+  if (data == null) {
+    return (
+      <motion.div
+        className={`flex items-center gap-4 transition-opacity duration-300 ${loading ? 'opacity-55' : 'opacity-100'}`}
+      >
+        <div className="flex flex-col items-end gap-0.5 leading-tight">
+          <p
+            className={
+              isSleep
+                ? 'text-[clamp(0.75rem,1.1vw,1rem)] font-medium tracking-wider text-sky-400/50 uppercase'
+                : 'text-[clamp(0.65rem,0.85vw,0.85rem)] font-medium tracking-wider text-sky-400/60 uppercase'
+            }
+          >
+            {loading ? 'Loading weather…' : 'Weather unavailable'}
+          </p>
+          {!loading && errorHint && (
+            <p
+              className={
+                isSleep
+                  ? 'max-w-[min(100%,22rem)] text-right text-[clamp(0.7rem,0.95vw,0.85rem)] leading-snug text-amber-400/70'
+                  : 'max-w-[min(100%,20rem)] text-right text-[clamp(0.62rem,0.8vw,0.78rem)] leading-snug text-amber-400/65'
+              }
+            >
+              {errorHint}
+            </p>
+          )}
+          <span
+            className={
+              isSleep
+                ? 'font-display text-[clamp(2.5rem,5.5vw,5.5rem)] leading-none font-light text-white/40'
+                : 'font-display text-[clamp(2rem,3.8vw,3.75rem)] leading-none font-light text-white/40'
+            }
+          >
+            —°C
+          </span>
+        </div>
+      </motion.div>
+    )
+  }
+
+  const IconComponent = getIcon(data.icon) ?? getIcon('cloud-sun')
+
   return (
-    <motion.div className="flex items-center gap-4">
+    <motion.div
+      className={`flex items-center gap-4 transition-opacity duration-300 ${loading ? 'opacity-55' : 'opacity-100'}`}
+    >
       <div className="flex flex-col items-end gap-0.5 leading-tight">
         <p
           className={

@@ -16,9 +16,16 @@ export interface WeatherData {
 export interface CalendarEvent {
   id: string
   title: string
+  /** e.g. "Mon, Apr 7" */
+  date: string
   time: string
   duration: string
   color: string
+  /** ISO start from API (client formats date/time when present). */
+  start?: string
+  /** ISO end from API. */
+  end?: string
+  allDay?: boolean
 }
 
 export interface HomeDevice {

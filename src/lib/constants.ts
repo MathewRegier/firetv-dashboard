@@ -3,6 +3,10 @@ export const WINDSOR_TIMEZONE = 'America/Toronto'
 
 export const WINDSOR_LOCATION_LABEL = 'Windsor, Ontario'
 
+/** Default grid point for Open-Meteo (server `WEATHER_LATITUDE` / `WEATHER_LONGITUDE` override). */
+export const WINDSOR_WEATHER_LAT = 42.3149
+export const WINDSOR_WEATHER_LON = -83.0364
+
 /**
  * Background video URL.
  * - Local: place `California-Dolphions.mp4` under `public/screensaver-videos/` (gitignored if large).

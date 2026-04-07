@@ -4,10 +4,16 @@ import { WeatherWidget } from '@/widgets/WeatherWidget'
 import type { WeatherData } from '@/lib/dashboardTypes'
 
 interface SleepAmbientViewProps {
-  weather: WeatherData
+  weather: WeatherData | null
+  weatherLoading?: boolean
+  weatherError?: string | null
 }
 
-export function SleepAmbientView({ weather }: SleepAmbientViewProps) {
+export function SleepAmbientView({
+  weather,
+  weatherLoading = false,
+  weatherError = null,
+}: SleepAmbientViewProps) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -20,7 +26,12 @@ export function SleepAmbientView({ weather }: SleepAmbientViewProps) {
           <ClockWidget mode="sleep" />
         </div>
         <div className="flex min-w-0 flex-1 items-center justify-end">
-          <WeatherWidget data={weather} mode="sleep" />
+          <WeatherWidget
+            data={weather}
+            mode="sleep"
+            loading={weatherLoading}
+            errorHint={weatherError}
+          />
         </div>
       </div>
     </motion.div>

@@ -11,8 +11,6 @@ import { QuickActionsWidget } from '@/widgets/QuickActionsWidget'
 import { NotesWidget } from '@/widgets/NotesWidget'
 import { FeaturedCarouselWidget } from '@/widgets/FeaturedCarouselWidget'
 import {
-  mockWeather,
-  mockEvents,
   mockDevices,
   mockMedia,
   mockQuickActions,
@@ -21,6 +19,8 @@ import {
 } from '@/data/dashboardMockData'
 import { HOME_STATUS_WIDGET_ENABLED } from '@/lib/featureFlags'
 import { SCREENSAVER_VIDEO_SRC } from '@/lib/constants'
+import { useCalendarEvents } from '@/hooks/useCalendarEvents'
+import { useWeather } from '@/hooks/useWeather'
 
 const stagger = {
   hidden: {},
@@ -44,6 +44,10 @@ const fadeUp = {
 
 export function DashboardPage() {
   const [sleepMode, setSleepMode] = useState(false)
+  const { events: calendarEvents, loading: calendarLoading } =
+    useCalendarEvents(8)
+  const { data: weather, loading: weatherLoading, error: weatherError } =
+    useWeather()
 
   useEffect(() => {
     if (sleepMode) {
@@ -84,7 +88,11 @@ export function DashboardPage() {
       sleepMode={sleepMode}
     >
       {sleepMode ? (
-        <SleepAmbientView weather={mockWeather} />
+        <SleepAmbientView
+          weather={weather}
+          weatherLoading={weatherLoading}
+          weatherError={weatherError}
+        />
       ) : (
         <motion.div
           className="flex h-full min-h-0 flex-1 flex-col gap-[clamp(0.35rem,0.85vh,0.65rem)] overflow-hidden"
@@ -97,7 +105,11 @@ export function DashboardPage() {
             variants={fadeUp}
           >
             <ClockWidget />
-            <WeatherWidget data={mockWeather} />
+            <WeatherWidget
+              data={weather}
+              loading={weatherLoading}
+              errorHint={weatherError}
+            />
           </motion.div>
 
           <motion.div
@@ -105,7 +117,10 @@ export function DashboardPage() {
             variants={stagger}
           >
             <motion.div variants={fadeUp} className="min-h-0">
-              <EventsWidget events={mockEvents} />
+              <EventsWidget
+                events={calendarEvents}
+                loading={calendarLoading}
+              />
             </motion.div>
             {HOME_STATUS_WIDGET_ENABLED && (
               <motion.div variants={fadeUp} className="col-span-1 min-h-0">

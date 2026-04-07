@@ -25,6 +25,7 @@ export const mockEvents: CalendarEvent[] = [
   {
     id: '1',
     title: 'Team Standup',
+    date: 'Mon, Apr 7',
     time: '9:00 AM',
     duration: '30 min',
     color: '#38bdf8',
@@ -32,6 +33,7 @@ export const mockEvents: CalendarEvent[] = [
   {
     id: '2',
     title: 'Design Review',
+    date: 'Mon, Apr 7',
     time: '11:00 AM',
     duration: '1 hr',
     color: '#a78bfa',
@@ -39,6 +41,7 @@ export const mockEvents: CalendarEvent[] = [
   {
     id: '3',
     title: 'Lunch with Kristina',
+    date: 'Mon, Apr 7',
     time: '12:30 PM',
     duration: '1 hr',
     color: '#34d399',
@@ -46,6 +49,7 @@ export const mockEvents: CalendarEvent[] = [
   {
     id: '4',
     title: 'Project Planning',
+    date: 'Mon, Apr 7',
     time: '3:00 PM',
     duration: '45 min',
     color: '#fb923c',
