@@ -17,9 +17,9 @@ export const FocusableCard = forwardRef<HTMLDivElement, FocusableCardProps>(
         tabIndex={0}
         className={cn(
           'rounded-3xl border border-white/[0.08] bg-white/[0.06] backdrop-blur-xl',
-          'p-7 outline-none',
+          'min-h-0 overflow-hidden p-[clamp(0.75rem,1.5vmin,1.15rem)] outline-none',
           'transition-all duration-300 ease-out',
-          'focus:scale-[1.02] focus:border-sky-400/60 focus:bg-white/[0.10]',
+          'focus:scale-[1.01] focus:border-sky-400/60 focus:bg-white/[0.10]',
           'focus:shadow-[0_0_0_1px_rgba(56,189,248,0.4),0_0_40px_-5px_rgba(56,189,248,0.25)]',
           'hover:border-white/[0.14] hover:bg-white/[0.08]',
           className,

@@ -8,14 +8,14 @@ interface EventsWidgetProps {
 
 export function EventsWidget({ events }: EventsWidgetProps) {
   return (
-    <FocusableCard className="flex h-full flex-col">
-      <div className="mb-5 flex items-center gap-3">
-        <Calendar size={20} strokeWidth={1.5} className="text-white/40" />
-        <h2 className="font-display text-lg font-medium tracking-wide text-white/60">
+    <FocusableCard className="flex h-full min-h-0 flex-col">
+      <div className="mb-2 flex shrink-0 items-center gap-2">
+        <Calendar size={18} strokeWidth={1.5} className="text-white/40" />
+        <h2 className="font-display text-base font-medium tracking-wide text-white/60">
           Upcoming
         </h2>
       </div>
-      <div className="flex flex-1 flex-col gap-3 overflow-y-auto">
+      <div className="flex min-h-0 flex-1 flex-col justify-center gap-2 overflow-hidden">
         {events.map((event) => (
           <div key={event.id} className="flex items-start gap-3">
             <div

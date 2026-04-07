@@ -1,5 +1,7 @@
+import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { DashboardShell } from '@/layout/DashboardShell'
+import { SleepAmbientView } from '@/components/SleepAmbientView'
 import { ClockWidget } from '@/widgets/ClockWidget'
 import { WeatherWidget } from '@/widgets/WeatherWidget'
 import { EventsWidget } from '@/widgets/EventsWidget'
@@ -18,6 +20,7 @@ import {
   mockFeatured,
 } from '@/data/dashboardMockData'
 import { HOME_STATUS_WIDGET_ENABLED } from '@/lib/featureFlags'
+import { SCREENSAVER_VIDEO_SRC } from '@/lib/constants'
 
 const stagger = {
   hidden: {},
@@ -40,55 +43,100 @@ const fadeUp = {
 }
 
 export function DashboardPage() {
-  return (
-    <DashboardShell>
-      <motion.div
-        className="flex h-full flex-col gap-[2vh]"
-        variants={stagger}
-        initial="hidden"
-        animate="visible"
-      >
-        {/* Hero Row: Clock + Weather */}
-        <motion.div
-          className="flex shrink-0 items-end justify-between"
-          variants={fadeUp}
-        >
-          <ClockWidget />
-          <WeatherWidget data={mockWeather} />
-        </motion.div>
+  const [sleepMode, setSleepMode] = useState(false)
 
-        {/* Main grid: optional Home status; quick actions always on (general shortcuts). */}
+  useEffect(() => {
+    if (sleepMode) {
+      document.documentElement.dataset.sleepMode = 'true'
+    } else {
+      document.documentElement.removeAttribute('data-sleep-mode')
+    }
+  }, [sleepMode])
+
+  useEffect(() => {
+    if (!sleepMode) return
+
+    const wake = (e: Event) => {
+      setSleepMode(false)
+      e.preventDefault()
+      if ('stopImmediatePropagation' in e) {
+        ;(e as KeyboardEvent).stopImmediatePropagation()
+      }
+    }
+
+    document.addEventListener('keydown', wake, { capture: true })
+    document.addEventListener('click', wake, { capture: true })
+    return () => {
+      document.removeEventListener('keydown', wake, { capture: true })
+      document.removeEventListener('click', wake, { capture: true })
+    }
+  }, [sleepMode])
+
+  const onQuickAction = useCallback((actionId: string) => {
+    if (actionId === 'sleep') {
+      setSleepMode(true)
+    }
+  }, [])
+
+  return (
+    <DashboardShell
+      videoSrc={SCREENSAVER_VIDEO_SRC}
+      sleepMode={sleepMode}
+    >
+      {sleepMode ? (
+        <SleepAmbientView weather={mockWeather} />
+      ) : (
         <motion.div
-          className="grid min-h-0 flex-1 grid-cols-4 grid-rows-2 gap-[1.1vw]"
+          className="flex h-full min-h-0 flex-1 flex-col gap-[clamp(0.35rem,0.85vh,0.65rem)] overflow-hidden"
           variants={stagger}
+          initial="hidden"
+          animate="visible"
         >
-          <motion.div variants={fadeUp} className="min-h-0">
-            <EventsWidget events={mockEvents} />
-          </motion.div>
-          {HOME_STATUS_WIDGET_ENABLED && (
-            <motion.div variants={fadeUp} className="col-span-1 min-h-0">
-              <HomeStatusWidget devices={mockDevices} />
-            </motion.div>
-          )}
           <motion.div
+            className="flex shrink-0 items-end justify-between gap-4 overflow-hidden"
             variants={fadeUp}
-            className={
-              HOME_STATUS_WIDGET_ENABLED ? 'col-span-2 min-h-0' : 'col-span-3 min-h-0'
-            }
           >
-            <FeaturedCarouselWidget items={mockFeatured} />
+            <ClockWidget />
+            <WeatherWidget data={mockWeather} />
           </motion.div>
-          <motion.div variants={fadeUp} className="col-span-1 min-h-0">
-            <NowPlayingWidget track={mockMedia} />
-          </motion.div>
-          <motion.div variants={fadeUp} className="col-span-1 min-h-0">
-            <QuickActionsWidget actions={mockQuickActions} />
-          </motion.div>
-          <motion.div variants={fadeUp} className="col-span-2 min-h-0">
-            <NotesWidget notes={mockNotes} />
+
+          <motion.div
+            className="grid min-h-0 min-w-0 flex-1 grid-cols-4 gap-[clamp(0.35rem,0.85vmin,0.6rem)] overflow-hidden [grid-template-rows:minmax(0,1fr)_minmax(0,1fr)]"
+            variants={stagger}
+          >
+            <motion.div variants={fadeUp} className="min-h-0">
+              <EventsWidget events={mockEvents} />
+            </motion.div>
+            {HOME_STATUS_WIDGET_ENABLED && (
+              <motion.div variants={fadeUp} className="col-span-1 min-h-0">
+                <HomeStatusWidget devices={mockDevices} />
+              </motion.div>
+            )}
+            <motion.div
+              variants={fadeUp}
+              className={
+                HOME_STATUS_WIDGET_ENABLED
+                  ? 'col-span-2 min-h-0'
+                  : 'col-span-3 min-h-0'
+              }
+            >
+              <FeaturedCarouselWidget items={mockFeatured} />
+            </motion.div>
+            <motion.div variants={fadeUp} className="col-span-1 min-h-0">
+              <NowPlayingWidget track={mockMedia} />
+            </motion.div>
+            <motion.div variants={fadeUp} className="col-span-1 min-h-0">
+              <QuickActionsWidget
+                actions={mockQuickActions}
+                onSelect={onQuickAction}
+              />
+            </motion.div>
+            <motion.div variants={fadeUp} className="col-span-2 min-h-0">
+              <NotesWidget notes={mockNotes} />
+            </motion.div>
           </motion.div>
         </motion.div>
-      </motion.div>
+      )}
     </DashboardShell>
   )
 }

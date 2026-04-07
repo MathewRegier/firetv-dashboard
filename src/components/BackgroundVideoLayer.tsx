@@ -1,18 +1,23 @@
 import type { ReactNode } from 'react'
+import { cn } from '@/lib/utils'
 
 interface BackgroundVideoLayerProps {
   videoSrc?: string
+  /** Stronger dim / scrims for sleep / screensaver mode. */
+  sleepMode?: boolean
   children: ReactNode
 }
 
 export function BackgroundVideoLayer({
   videoSrc,
+  sleepMode = false,
   children,
 }: BackgroundVideoLayerProps) {
   return (
-    <div className="fixed inset-0 h-screen w-screen overflow-hidden">
+    <div className="fixed inset-0 min-h-0 w-full overflow-hidden">
       {videoSrc ? (
         <video
+          key={videoSrc}
           autoPlay
           muted
           loop
@@ -35,9 +40,26 @@ export function BackgroundVideoLayer({
         </div>
       )}
 
-      <div className="absolute inset-0 bg-black/30" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/15 via-transparent to-black/15" />
+      <div
+        className={cn(
+          'absolute inset-0',
+          sleepMode ? 'bg-black/[0.72]' : 'bg-black/55',
+        )}
+      />
+      <div
+        className={cn(
+          'absolute inset-0 bg-gradient-to-t via-transparent',
+          sleepMode
+            ? 'from-black/75 to-black/45'
+            : 'from-black/65 to-black/35',
+        )}
+      />
+      <div
+        className={cn(
+          'absolute inset-0 bg-gradient-to-r via-transparent',
+          sleepMode ? 'from-black/40 to-black/40' : 'from-black/28 to-black/28',
+        )}
+      />
 
       {/* Subtle film grain for depth */}
       <div

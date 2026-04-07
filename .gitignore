@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Screensaver videos are too large for GitHub (100MB limit); add locally or use Git LFS
+public/screensaver-videos/*.mp4

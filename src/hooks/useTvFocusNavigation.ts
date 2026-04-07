@@ -58,6 +58,10 @@ function findBestCandidate(
 
 export function useTvFocusNavigation() {
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (document.documentElement.dataset.sleepMode === 'true') {
+      return
+    }
+
     const direction = DIRECTION_MAP[e.key]
 
     if (e.key === 'Enter') {

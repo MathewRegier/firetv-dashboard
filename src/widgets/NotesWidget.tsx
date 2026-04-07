@@ -14,14 +14,14 @@ const priorityColors: Record<NoteItem['priority'], string> = {
 
 export function NotesWidget({ notes }: NotesWidgetProps) {
   return (
-    <FocusableCard className="flex h-full flex-col">
-      <div className="mb-5 flex items-center gap-3">
-        <StickyNote size={20} strokeWidth={1.5} className="text-white/40" />
-        <h2 className="font-display text-lg font-medium tracking-wide text-white/60">
+    <FocusableCard className="flex h-full min-h-0 flex-col">
+      <div className="mb-2 flex shrink-0 items-center gap-2">
+        <StickyNote size={18} strokeWidth={1.5} className="text-white/40" />
+        <h2 className="font-display text-base font-medium tracking-wide text-white/60">
           Reminders
         </h2>
       </div>
-      <div className="flex flex-1 flex-col gap-3.5 overflow-y-auto">
+      <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-hidden">
         {notes.map((note) => (
           <div key={note.id} className="flex items-start gap-3">
             {note.completed ? (
@@ -38,7 +38,7 @@ export function NotesWidget({ notes }: NotesWidgetProps) {
               />
             )}
             <p
-              className={`text-[clamp(0.9rem,1vw,1.05rem)] leading-snug ${
+              className={`line-clamp-2 text-[clamp(0.8rem,0.95vw,0.98rem)] leading-snug ${
                 note.completed
                   ? 'text-white/25 line-through'
                   : 'text-white/75'

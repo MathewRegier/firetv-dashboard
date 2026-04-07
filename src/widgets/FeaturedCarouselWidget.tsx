@@ -28,7 +28,7 @@ export function FeaturedCarouselWidget({
     <div
       data-focusable="true"
       tabIndex={0}
-      className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/[0.08] outline-none transition-all duration-300 focus:scale-[1.01] focus:border-sky-400/50 focus:shadow-[0_0_40px_-5px_rgba(56,189,248,0.2)]"
+      className="relative flex h-full min-h-0 flex-col overflow-hidden rounded-3xl border border-white/[0.08] outline-none transition-all duration-300 focus:border-sky-400/50 focus:shadow-[0_0_40px_-5px_rgba(56,189,248,0.2)]"
     >
       <AnimatePresence mode="wait">
         <motion.div
@@ -43,24 +43,24 @@ export function FeaturedCarouselWidget({
 
       <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" />
 
-      <div className="relative z-10 flex flex-1 flex-col justify-between p-7">
-        <div>
-          <div className="mb-4 flex items-center gap-3">
+      <div className="relative z-10 flex min-h-0 flex-1 flex-col justify-between p-[clamp(0.75rem,1.5vmin,1.15rem)]">
+        <div className="min-h-0">
+          <div className="mb-2 flex items-center gap-2">
             {FeaturedIcon && (
               <FeaturedIcon
-                size={24}
+                size={20}
                 strokeWidth={1.5}
                 className="text-white/50"
               />
             )}
-            <span className="text-[clamp(0.8rem,0.9vw,0.95rem)] font-medium tracking-wider text-white/40 uppercase">
+            <span className="text-[clamp(0.7rem,0.8vw,0.88rem)] font-medium tracking-wider text-white/40 uppercase">
               {current.subtitle}
             </span>
           </div>
-          <h3 className="font-display mb-3 text-[clamp(1.6rem,2.2vw,2.4rem)] leading-tight font-semibold text-white/90">
+          <h3 className="font-display mb-2 line-clamp-2 text-[clamp(1.15rem,1.75vw,1.85rem)] leading-tight font-semibold text-white/90">
             {current.title}
           </h3>
-          <p className="max-w-md text-[clamp(0.9rem,1.05vw,1.1rem)] leading-relaxed text-white/45">
+          <p className="line-clamp-3 max-w-md text-[clamp(0.78rem,0.95vw,1rem)] leading-snug text-white/45">
             {current.description}
           </p>
         </div>

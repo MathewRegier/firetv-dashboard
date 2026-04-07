@@ -104,7 +104,7 @@ export const mockQuickActions: QuickAction[] = [
   { id: '2', label: 'Music', icon: 'music', color: '#34d399' },
   { id: '3', label: 'Photos', icon: 'image', color: '#a78bfa' },
   { id: '4', label: 'News', icon: 'newspaper', color: '#fb923c' },
-  { id: '5', label: 'Maps', icon: 'map-pin', color: '#f472b6' },
+  { id: 'sleep', label: 'Sleep', icon: 'moon', color: '#94a3b8' },
   { id: '6', label: 'Settings', icon: 'settings', color: '#94a3b8' },
 ]
 
