@@ -1,0 +1,52 @@
+import {
+  CloudSun,
+  Thermometer,
+  Lock,
+  Shield,
+  Warehouse,
+  Lightbulb,
+  Tv,
+  Music,
+  Camera,
+  Palette,
+  Settings,
+  Moon,
+  Zap,
+  Sun,
+  CloudRain,
+  Cloud,
+  Snowflake,
+  Calendar,
+  Image,
+  Newspaper,
+  MapPin,
+  type LucideIcon,
+} from 'lucide-react'
+
+export const iconMap: Record<string, LucideIcon> = {
+  'cloud-sun': CloudSun,
+  'cloud-rain': CloudRain,
+  cloud: Cloud,
+  snowflake: Snowflake,
+  thermometer: Thermometer,
+  lock: Lock,
+  shield: Shield,
+  warehouse: Warehouse,
+  lightbulb: Lightbulb,
+  tv: Tv,
+  music: Music,
+  camera: Camera,
+  palette: Palette,
+  settings: Settings,
+  moon: Moon,
+  zap: Zap,
+  sun: Sun,
+  calendar: Calendar,
+  image: Image,
+  newspaper: Newspaper,
+  'map-pin': MapPin,
+}
+
+export function getIcon(name: string): LucideIcon | undefined {
+  return iconMap[name]
+}
