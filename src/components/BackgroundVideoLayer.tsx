@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react'
+import { useRef } from 'react'
+import { useAmbientVideoPlayback } from '@/hooks/useAmbientVideoPlayback'
 import { cn } from '@/lib/utils'
 
 interface BackgroundVideoLayerProps {
@@ -13,15 +15,20 @@ export function BackgroundVideoLayer({
   sleepMode = false,
   children,
 }: BackgroundVideoLayerProps) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  useAmbientVideoPlayback(videoRef, videoSrc)
+
   return (
     <div className="fixed inset-0 min-h-0 w-full overflow-hidden">
       {videoSrc ? (
         <video
+          ref={videoRef}
           key={videoSrc}
           autoPlay
           muted
           loop
           playsInline
+          preload="auto"
           className="absolute inset-0 h-full w-full object-cover"
         >
           <source src={videoSrc} type="video/mp4" />
